@@ -28,3 +28,4 @@ jobs:
           eslint: true
           eslint_args: '--ext .js,.jsx,.ts,.tsx'
           prettier: true
+          auto_fix: true
