@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={AppScreens.LOGIN}>
+      <Stack.Navigator initialRouteName={AppScreens.LOGIN} headerMode="none">
         {screens.map(({ name, component }) => (
           <Stack.Screen
             key={`screen-${name}`}

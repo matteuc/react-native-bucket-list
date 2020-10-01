@@ -24,6 +24,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.21.2",
     "expo": "~39.0.2",
+    "expo-google-sign-in": "~8.3.0",
     "expo-notifications": "~0.7.2",
     "expo-permissions": "~9.3.0",
     "expo-splash-screen": "^0.6.2",
