@@ -7,7 +7,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "lint": "tsc --noEmit && eslint --fix --ext .js,.jsx,.ts,.tsx ./",
-    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}"
+    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
+    "lint:all": "pretty-quick --staged && yarn run lint"
   },
   "dependencies": {
     "@types/firebase": "^3.2.1",
@@ -45,7 +46,7 @@
   "private": true,
   "husky": {
     "hooks": {
-      "pre-push": "pretty-quick --staged && yarn run lint"
+      "pre-commit": "yarn run lint:all"
     }
   }
 }
