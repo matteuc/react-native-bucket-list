@@ -1,39 +1,12 @@
 import React, { createContext, useEffect, useContext, useState } from 'react';
-import {
-  Provider as PaperProvider,
-  DefaultTheme,
-  DarkTheme,
-} from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { darkTheme, theme } from '../theme';
 
 interface ThemeContextProps extends ReactNativePaper.Theme {
   handleToggleTheme: () => void;
   isDark: boolean;
 }
-
-const customColors = {
-  primary: '#3498db',
-  accent: '#f1c40f',
-};
-
-const theme = {
-  ...DefaultTheme,
-  roundness: 2,
-  colors: {
-    ...DefaultTheme.colors,
-    ...customColors,
-  },
-};
-
-const darkTheme = {
-  ...DarkTheme,
-  roundness: 2,
-  colors: {
-    ...DarkTheme.colors,
-    ...customColors,
-    background: '#000d1a',
-  },
-};
 
 const ThemeContext = createContext<ThemeContextProps>({
   ...theme,
