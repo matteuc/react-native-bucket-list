@@ -8,3 +8,4 @@
 6. Notifications [source](https://docs.expo.io/versions/latest/sdk/notifications/)
 7. Camera [source](https://docs.expo.io/versions/latest/sdk/camera/)
 8. Cache Image [source](https://github.com/wcandillon/react-native-expo-image-cache#readme)
+9. Linting [source](https://medium.com/@killerchip0/react-native-typescript-with-eslint-and-prettier-e98d50585627)
