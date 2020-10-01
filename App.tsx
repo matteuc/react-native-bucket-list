@@ -5,6 +5,7 @@ import { NetworkStatusProvider } from './context/NetworkStatusProvider';
 import { ThemeProvider } from './context/ThemeProvider';
 import screens from './screens';
 import { AppScreens } from './constants';
+import { AuthProvider } from './context/AuthProvider';
 
 const Stack = createStackNavigator();
 
@@ -26,10 +27,12 @@ function App() {
 
 export default function Main() {
   return (
-    <NetworkStatusProvider>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </NetworkStatusProvider>
+    <ThemeProvider>
+      <NetworkStatusProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </NetworkStatusProvider>
+    </ThemeProvider>
   );
 }
