@@ -5,16 +5,27 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "lint": "tsc --noEmit && eslint --fix --ext .js,.jsx,.ts,.tsx ./",
+    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
+    "lint:all": "pretty-quick --staged && yarn run lint"
   },
   "dependencies": {
     "@types/firebase": "^3.2.1",
+    "@typescript-eslint/eslint-plugin": "^4.3.0",
+    "eslint-config-airbnb-typescript": "^11.0.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.21.2",
     "expo": "~39.0.2",
     "expo-notifications": "~0.7.2",
     "expo-permissions": "~9.3.0",
     "expo-splash-screen": "^0.6.2",
     "expo-status-bar": "~1.0.2",
     "firebase": "7.9.0",
+    "husky": "^4.3.0",
+    "prettier": "^2.1.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
@@ -24,11 +35,18 @@
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
+    "@react-native-community/eslint-config": "^2.0.0",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
-    "react-native-web": "~0.13.7",
+    "eslint": "^7.10.0",
+    "pretty-quick": "^3.0.2",
     "typescript": "~3.9.5"
   },
-  "private": true
+  "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint:all"
+    }
+  }
 }
