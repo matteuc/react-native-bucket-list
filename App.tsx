@@ -1,27 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
+import { ThemeProvider, useTheme } from './context/ThemeProvider';
+import ThemedView from './components/ThemedView';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
 
-export default function App() {
+function App() {
+  const { handleToggleTheme } = useTheme();
+  return (
+    <ThemedView style={styles.container}>
+      <Text>Open up App.tsx to start working on your app!!</Text>
+      <Button onPress={handleToggleTheme}>Change Theme</Button>
+      <StatusBar style="auto" />
+    </ThemedView>
+  );
+}
+
+export default function Main() {
   return (
     <NetworkStatusProvider>
-      <PaperProvider>
-        <View style={styles.container}>
-          <Text>Open up App.tsx to start working on your app!!</Text>
-          <StatusBar style="auto" />
-        </View>
-      </PaperProvider>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </NetworkStatusProvider>
   );
 }
