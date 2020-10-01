@@ -11,6 +11,7 @@
     "lint:all": "pretty-quick --staged && yarn run lint"
   },
   "dependencies": {
+    "@react-native-community/netinfo": "5.9.6",
     "@types/firebase": "^3.2.1",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "eslint-config-airbnb-typescript": "^11.0.0",
@@ -30,6 +31,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
     "react-native-expo-image-cache": "^4.1.0",
+    "react-native-offline": "^5.7.0",
     "react-native-paper": "^4.2.0",
     "react-native-swipe-list-view": "^3.2.4",
     "react-native-web": "~0.13.12"
