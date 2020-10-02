@@ -16,3 +16,8 @@ export type AppUserForm = {
   email: string;
   image: string;
 };
+
+export type WishForm = {
+  name: string;
+  description: string;
+};

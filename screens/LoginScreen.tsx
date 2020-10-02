@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, TouchableNativeFeedback } from 'react-native';
 import { Headline } from 'react-native-paper';
-import ThemedView from '../components/ThemedView';
+import ThemedScreen from '../components/ThemedScreen';
 
 import logo from '../assets/icon.png';
 import googleSignInButton from '../assets/signin-button.png';
@@ -33,16 +33,20 @@ const LoginScreen: React.FC = () => {
   const { signIn } = useAuth();
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedScreen style={styles.container}>
       <View style={styles.innerView}>
         <Headline>buckets</Headline>
         <Image source={logo} />
 
-        <View onTouchStart={signIn} style={styles.buttonContainer}>
+        <TouchableNativeFeedback
+          onPress={signIn}
+          useForeground
+          background={TouchableNativeFeedback.Ripple('white', true)}
+        >
           <Image style={styles.button} source={googleSignInButton} />
-        </View>
+        </TouchableNativeFeedback>
       </View>
-    </ThemedView>
+    </ThemedScreen>
   );
 };
 
