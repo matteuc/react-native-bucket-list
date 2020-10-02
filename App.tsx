@@ -7,6 +7,7 @@ import { ThemeProvider } from './context/ThemeProvider';
 import { unAuthScreens, authScreens } from './screens';
 import { AppScreens } from './constants';
 import { AuthProvider, useAuth } from './context/AuthProvider';
+import { WishProvider } from './context/WishProvider';
 
 const Stack = createStackNavigator();
 
@@ -56,7 +57,9 @@ export default function Main() {
     <ThemeProvider>
       <NetworkStatusProvider>
         <AuthProvider>
-          <App />
+          <WishProvider>
+            <App />
+          </WishProvider>
         </AuthProvider>
       </NetworkStatusProvider>
     </ThemeProvider>

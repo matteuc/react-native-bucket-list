@@ -5,10 +5,10 @@ LogBox.ignoreLogs([
   'Setting a timer', // Suppress Firebase onSnapshot errors
 ]);
 
-export async function onCollectionSnapshot<T>(
+export function onCollectionSnapshot<T>(
   path: string,
   onChange: (data: Array<T>) => any
-) {
+): firebase.Unsubscribe {
   return db.collection(path).onSnapshot((collectionSnap) => {
     const items: Array<T> = [];
 

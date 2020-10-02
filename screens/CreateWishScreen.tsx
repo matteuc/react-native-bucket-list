@@ -1,8 +1,10 @@
-import React from 'react';
+import { useNavigation } from '@react-navigation/core';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import ThemedScreen from '../components/ThemedScreen';
 import { WishForm } from '../constants';
+import { useWish } from '../context/WishProvider';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,10 +24,26 @@ const styles = StyleSheet.create({
 });
 
 const CreateWishScreen: React.FC = () => {
-  const [wish, setWish] = React.useState<WishForm>({
+  const initialForm = {
     name: '',
     description: '',
-  });
+  };
+
+  const [wish, setWish] = useState<WishForm>(initialForm);
+  const [wishValid, setWishValid] = useState<boolean>(false);
+
+  const { handleCreateWish: createWish } = useWish();
+  const navigation = useNavigation();
+
+  const handleCreateWish = async () => {
+    await createWish(wish);
+
+    navigation.goBack();
+  };
+
+  useEffect(() => {
+    setWishValid(Boolean(wish.name.length && wish.description.length));
+  }, [wish]);
 
   return (
     <>
@@ -59,7 +77,12 @@ const CreateWishScreen: React.FC = () => {
               />
             </View>
             <View style={styles.formField}>
-              <Button mode="contained" style={styles.button} onPress={() => {}}>
+              <Button
+                disabled={!wishValid}
+                mode="contained"
+                style={styles.button}
+                onPress={handleCreateWish}
+              >
                 Create
               </Button>
             </View>

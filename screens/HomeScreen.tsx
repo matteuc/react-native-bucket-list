@@ -1,21 +1,39 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Appbar, Avatar, Text } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { Appbar, Avatar, List, TouchableRipple } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/core';
+import { SwipeRow } from 'react-native-swipe-list-view';
+import TimeAgo from 'react-native-timeago';
+import { Icon } from 'react-native-elements';
 import ThemedScreen from '../components/ThemedScreen';
 import { AppScreens } from '../constants';
 import Fab from '../components/Fab';
 import { useTheme } from '../context/ThemeProvider';
 import { useAuth } from '../context/AuthProvider';
+import { useWish } from '../context/WishProvider';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   title: {
     fontSize: 15,
+  },
+  rowBack: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  left: {
+    flex: 1,
+    backgroundColor: 'green',
+  },
+  right: {
+    flex: 1,
+    backgroundColor: 'red',
   },
 });
 
@@ -55,7 +73,10 @@ const Nav: React.FC = () => {
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
-
+  const { wishes } = useWish();
+  const {
+    colors: { surface },
+  } = useTheme();
   return (
     <>
       <Nav />
@@ -64,7 +85,71 @@ const HomeScreen: React.FC = () => {
           icon="add"
           onPress={() => navigation.navigate(AppScreens.CREATE_WISH)}
         />
-        <Text>Home</Text>
+        <View style={{ width: '100%' }}>
+          <List.Section>
+            {wishes.map((wish) => (
+              <SwipeRow
+                key={`wish-${wish.name}`}
+                leftOpenValue={75}
+                rightOpenValue={-75}
+                stopLeftSwipe={100}
+                stopRightSwipe={-100}
+              >
+                <View style={styles.rowBack}>
+                  <View
+                    style={{
+                      height: '100%',
+                      flex: 1,
+                      backgroundColor: 'green',
+                      alignItems: 'flex-start',
+                    }}
+                  >
+                    <TouchableRipple onPress={() => {}}>
+                      <View
+                        style={{
+                          height: '100%',
+                          width: 75,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Icon name="check" color="white" />
+                      </View>
+                    </TouchableRipple>
+                  </View>
+                  <View
+                    style={{
+                      height: '100%',
+                      flex: 1,
+                      backgroundColor: 'red',
+                      alignItems: 'flex-end',
+                    }}
+                  >
+                    <TouchableRipple onPress={() => {}}>
+                      <View
+                        style={{
+                          height: '100%',
+                          width: 75,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Icon name="delete" color="white" />
+                      </View>
+                    </TouchableRipple>
+                  </View>
+                </View>
+                <List.Item
+                  style={{ backgroundColor: surface }}
+                  onPress={() => {}}
+                  title={wish.name}
+                  description={<TimeAgo time={wish.createdAt} />}
+                  left={(props) => <List.Icon {...props} icon="star" />}
+                />
+              </SwipeRow>
+            ))}
+          </List.Section>
+        </View>
       </ThemedScreen>
     </>
   );

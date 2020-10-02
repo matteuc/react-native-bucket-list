@@ -21,3 +21,13 @@ export type WishForm = {
   name: string;
   description: string;
 };
+
+export type Wish = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: number;
+};
+
+export const WISHES_COLLECTION = 'wishes';
+export const USERS_COLLECTION = 'users';
