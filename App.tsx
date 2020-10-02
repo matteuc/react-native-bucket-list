@@ -1,36 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
-import { ThemeProvider, useTheme } from './context/ThemeProvider';
-import ThemedView from './components/ThemedView';
+import { ThemeProvider } from './context/ThemeProvider';
+import screens from './screens';
+import { AppScreens } from './constants';
+import { AuthProvider } from './context/AuthProvider';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Stack = createStackNavigator();
 
 function App() {
-  const { handleToggleTheme } = useTheme();
   return (
-    <ThemedView style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!!</Text>
-      <Button onPress={handleToggleTheme}>Change Theme</Button>
-      <StatusBar style="auto" />
-    </ThemedView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={AppScreens.LOGIN} headerMode="none">
+        {screens.map(({ name, component }) => (
+          <Stack.Screen
+            key={`screen-${name}`}
+            name={name}
+            component={component}
+          />
+        ))}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 export default function Main() {
   return (
-    <NetworkStatusProvider>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </NetworkStatusProvider>
+    <ThemeProvider>
+      <NetworkStatusProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </NetworkStatusProvider>
+    </ThemeProvider>
   );
 }

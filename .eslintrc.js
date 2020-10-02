@@ -18,5 +18,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars-experimental': 'error',
     'no-unused-vars': 'off',
+    'import/prefer-default-export': 0,
   },
 };

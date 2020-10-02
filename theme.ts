@@ -1,7 +1,7 @@
 import { DefaultTheme, DarkTheme } from 'react-native-paper';
 
 const customColors = {
-  primary: '#3498db',
+  primary: '#00008B',
   accent: '#f1c40f',
 };
 

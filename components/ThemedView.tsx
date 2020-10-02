@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleProp, ViewStyle, StyleSheet } from 'react-native';
 import { useTheme } from '../context/ThemeProvider';
 
 interface ThemedViewProps {
@@ -19,7 +19,7 @@ const ThemedView: React.FC<ThemedViewProps> = ({ children, style }) => {
     },
   ]);
 
-  return <View style={combinedStyles}>{children}</View>;
+  return <SafeAreaView style={combinedStyles}>{children}</SafeAreaView>;
 };
 
 export default ThemedView;

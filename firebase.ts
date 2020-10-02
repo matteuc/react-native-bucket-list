@@ -1,8 +1,11 @@
-import { initializeApp, auth, firestore, storage } from 'firebase';
-
-// Add the web app's Firebase configuration in the root directory
+import { initializeApp, auth, firestore, storage, apps } from 'firebase';
+import 'firebase/firestore';
 import firebaseConfig from './serviceAccount.json';
 
-initializeApp(firebaseConfig);
+if (!apps.length) {
+  initializeApp(firebaseConfig);
+}
 
-export { auth, storage, firestore };
+const db = firestore();
+
+export { auth, storage, db };
