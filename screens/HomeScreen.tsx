@@ -7,6 +7,7 @@ import { useTheme } from '../context/ThemeProvider';
 import ThemedView from '../components/ThemedView';
 import { AppScreens } from '../constants';
 import { useAuth } from '../context/AuthProvider';
+import Fab from '../components/Fab';
 
 const styles = StyleSheet.create({
   container: {
@@ -67,6 +68,7 @@ const HomeScreen: React.FC = () => {
         <Appbar.Action icon="exit-run" onPress={() => signOut()} />
       </Appbar.Header>
       <ThemedView style={styles.container}>
+        <Fab icon="add" onPress={() => {}} />
         <Text>Open up App.tsx to start working on your app!!</Text>
         <StatusBar style="auto" />
       </ThemedView>

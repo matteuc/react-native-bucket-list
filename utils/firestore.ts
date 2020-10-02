@@ -1,7 +1,7 @@
-import { YellowBox } from 'react-native';
+import { LogBox } from 'react-native';
 import { db } from '../firebase';
 
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   'Setting a timer', // Suppress Firebase onSnapshot errors
 ]);
 
