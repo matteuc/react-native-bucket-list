@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Appbar, Avatar, List, TouchableRipple } from 'react-native-paper';
+import {
+  Appbar,
+  Avatar,
+  List,
+  Text,
+  TouchableRipple,
+} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/core';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import TimeAgo from 'react-native-timeago';
@@ -73,10 +79,35 @@ const Nav: React.FC = () => {
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { wishes } = useWish();
+  const { wishes, handleMarkWish } = useWish();
   const {
     colors: { surface },
   } = useTheme();
+
+  type RefMap = {
+    [id: string]: React.RefObject<SwipeRow<any>>;
+  };
+
+  const [swipeRowRefs, setSwipeRowRefs] = useState<RefMap>({});
+
+  useEffect(() => {
+    // add or remove refs
+    setSwipeRowRefs((refMap) =>
+      wishes.reduce<RefMap>(
+        (prevMap, wish) => ({
+          ...prevMap,
+          [wish.id]: refMap[wish.id] || createRef(),
+        }),
+        {}
+      )
+    );
+  }, [wishes]);
+
+  const handleActionTap = (id: string, action?: Function) => {
+    swipeRowRefs[id].current?.closeRow();
+    if (action) action();
+  };
+
   return (
     <>
       <Nav />
@@ -89,6 +120,7 @@ const HomeScreen: React.FC = () => {
           <List.Section>
             {wishes.map((wish) => (
               <SwipeRow
+                ref={swipeRowRefs[wish.id]}
                 key={`wish-${wish.name}`}
                 leftOpenValue={75}
                 rightOpenValue={-75}
@@ -104,7 +136,13 @@ const HomeScreen: React.FC = () => {
                       alignItems: 'flex-start',
                     }}
                   >
-                    <TouchableRipple onPress={() => {}}>
+                    <TouchableRipple
+                      onPress={() =>
+                        handleActionTap(wish.id, () =>
+                          handleMarkWish(wish.id, true)
+                        )
+                      }
+                    >
                       <View
                         style={{
                           height: '100%',
@@ -125,7 +163,7 @@ const HomeScreen: React.FC = () => {
                       alignItems: 'flex-end',
                     }}
                   >
-                    <TouchableRipple onPress={() => {}}>
+                    <TouchableRipple onPress={() => handleActionTap(wish.id)}>
                       <View
                         style={{
                           height: '100%',
@@ -142,8 +180,25 @@ const HomeScreen: React.FC = () => {
                 <List.Item
                   style={{ backgroundColor: surface }}
                   onPress={() => {}}
-                  title={wish.name}
-                  description={<TimeAgo time={wish.createdAt} />}
+                  title={
+                    <Text
+                      style={
+                        wish.completed
+                          ? {
+                              textDecorationLine: 'line-through',
+                              textDecorationStyle: 'solid',
+                            }
+                          : null
+                      }
+                    >
+                      {wish.name}
+                    </Text>
+                  }
+                  description={
+                    <TimeAgo
+                      time={wish.completed ? wish.completedAt : wish.createdAt}
+                    />
+                  }
                   left={(props) => <List.Icon {...props} icon="star" />}
                 />
               </SwipeRow>

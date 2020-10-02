@@ -24,9 +24,11 @@ export type WishForm = {
 
 export type Wish = {
   id: string;
+  completed: boolean;
   name: string;
   description: string;
   createdAt: number;
+  completedAt: number;
 };
 
 export const WISHES_COLLECTION = 'wishes';

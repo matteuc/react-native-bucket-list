@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Wish, WishForm } from '../constants';
-import { createWish, watchWishes } from '../utils/wishes';
+import { createWish, updateWish, watchWishes } from '../utils/wishes';
 import { useAuth } from './AuthProvider';
 
 interface WishContextProps {
   wishes: Array<Wish>;
   handleCreateWish: (w: WishForm) => any;
+  handleMarkWish: (id: string, c: boolean) => any;
 }
 
 const WishContext = createContext<WishContextProps>({
   wishes: [],
   handleCreateWish: () => {},
+  handleMarkWish: () => {},
 });
 
 const WishProvider: React.FC = ({ children }) => {
@@ -37,8 +39,17 @@ const WishProvider: React.FC = ({ children }) => {
     return createdWish;
   };
 
+  const handleMarkWish = async (
+    id: string,
+    completed: boolean
+  ): Promise<void> => {
+    if (!user?.id) return;
+
+    await updateWish(id, user?.id, { completed });
+  };
+
   return (
-    <WishContext.Provider value={{ wishes, handleCreateWish }}>
+    <WishContext.Provider value={{ wishes, handleCreateWish, handleMarkWish }}>
       {children}
     </WishContext.Provider>
   );

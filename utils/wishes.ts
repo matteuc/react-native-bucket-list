@@ -20,7 +20,13 @@ export async function createWish(
 ): Promise<Wish> {
   const id = getDocumentID(WISHES_COLLECTION);
 
-  const newWish = { ...wish, id, createdAt: Date.now() };
+  const newWish = {
+    ...wish,
+    id,
+    createdAt: Date.now(),
+    completedAt: Date.now(),
+    completed: false,
+  };
 
   await createDocument<Wish>(generateUserWishesPath(userId), id, newWish);
 
