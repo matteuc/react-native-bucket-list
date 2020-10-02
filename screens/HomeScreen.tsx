@@ -79,7 +79,7 @@ const Nav: React.FC = () => {
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { wishes, handleMarkWish } = useWish();
+  const { wishes, handleMarkWish, handleDeleteWish } = useWish();
   const {
     colors: { surface },
   } = useTheme();
@@ -163,7 +163,13 @@ const HomeScreen: React.FC = () => {
                       alignItems: 'flex-end',
                     }}
                   >
-                    <TouchableRipple onPress={() => handleActionTap(wish.id)}>
+                    <TouchableRipple
+                      onPress={() =>
+                        handleActionTap(wish.id, () =>
+                          handleDeleteWish(wish.id)
+                        )
+                      }
+                    >
                       <View
                         style={{
                           height: '100%',

@@ -57,6 +57,10 @@ export async function updateDocument<T>(
   await db.collection(path).doc(id).update(update);
 }
 
+export async function deleteDocument(path: string, id: string): Promise<void> {
+  await db.collection(path).doc(id).delete();
+}
+
 export async function createDocument<T>(
   path: string,
   id: string,

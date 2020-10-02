@@ -9,6 +9,7 @@ import {
   createDocument,
   onCollectionSnapshot,
   getDocumentID,
+  deleteDocument,
 } from './firestore';
 
 const generateUserWishesPath = (userId: string) =>
@@ -43,6 +44,13 @@ export async function updateWish(
     wishId,
     wishUpdates
   );
+}
+
+export async function deleteWish(
+  wishId: string,
+  userId: string
+): Promise<void> {
+  return deleteDocument(generateUserWishesPath(userId), wishId);
 }
 
 export function watchWishes(
