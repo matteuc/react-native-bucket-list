@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Avatar, Button, Text } from 'react-native-paper';
+import { Appbar, Avatar, Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/core';
 import { useTheme } from '../context/ThemeProvider';
 import ThemedView from '../components/ThemedView';
@@ -30,6 +30,7 @@ const HomeScreen: React.FC = () => {
   const {
     handleToggleTheme,
     colors: { primary },
+    isDark,
   } = useTheme();
   const { signOut, user } = useAuth();
 
@@ -59,11 +60,14 @@ const HomeScreen: React.FC = () => {
           subtitle={user?.email}
           titleStyle={styles.title}
         />
+        <Appbar.Action
+          icon={isDark ? 'white-balance-sunny' : 'weather-night'}
+          onPress={handleToggleTheme}
+        />
+        <Appbar.Action icon="exit-run" onPress={() => signOut()} />
       </Appbar.Header>
       <ThemedView style={styles.container}>
         <Text>Open up App.tsx to start working on your app!!</Text>
-        <Button onPress={handleToggleTheme}>Change Theme</Button>
-        <Button onPress={() => signOut()}>Logout</Button>
         <StatusBar style="auto" />
       </ThemedView>
     </>
