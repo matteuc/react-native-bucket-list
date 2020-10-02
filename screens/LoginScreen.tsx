@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { Headline } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/core';
 import ThemedView from '../components/ThemedView';
 
 import logo from '../assets/icon.png';
 import googleSignInButton from '../assets/signin-button.png';
 import { useAuth } from '../context/AuthProvider';
-import { AppScreens } from '../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,16 +30,7 @@ const styles = StyleSheet.create({
 });
 
 const LoginScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const { signIn, user } = useAuth();
-
-  useEffect(() => {
-    if (user?.id) {
-      navigation.reset({
-        routes: [{ name: AppScreens.HOME }],
-      });
-    }
-  }, [user?.id, navigation]);
+  const { signIn } = useAuth();
 
   return (
     <ThemedView style={styles.container}>

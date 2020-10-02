@@ -1,6 +1,7 @@
 export enum AppScreens {
   HOME = 'Home',
   LOGIN = 'Login',
+  CREATE_WISH = 'Create Wish',
 }
 
 export type AppUser = {
