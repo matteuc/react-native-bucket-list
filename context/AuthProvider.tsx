@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
-// import { auth } from "../firebase";
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Google from 'expo-google-app-auth';
+import { auth } from 'firebase';
 import { AppUser } from '../constants';
 import config from '../config';
+import { createUser, getUser, watchUser } from '../utils/users';
 
 interface AuthContextProps {
   signIn: () => Promise<void>;
@@ -36,19 +37,51 @@ const AuthProvider: React.FC = ({ children }) => {
         result.accessToken &&
         result.user.name &&
         result.user.photoUrl &&
-        result.user.email
+        result.user.email &&
+        result.user.id
       ) {
         setToken(result.accessToken);
-        setUser({
-          name: result.user.name,
-          image: result.user.photoUrl,
-          email: result.user.email,
-        });
+
+        const cred = await auth().signInWithCredential(
+          auth.GoogleAuthProvider.credential(result.idToken)
+        );
+
+        const userId = cred.user?.uid;
+
+        if (!userId)
+          throw new Error('Google Credential has no associated user');
+
+        const existingUser = await getUser(userId);
+
+        const dbUser: AppUser =
+          existingUser ||
+          (await createUser(
+            {
+              name: result.user.name,
+              image: result.user.photoUrl,
+              email: result.user.email,
+            },
+            userId
+          ));
+
+        setUser(dbUser);
       }
     } catch (e) {
       alert(e);
     }
   }
+
+  useEffect(() => {
+    if (user?.id) {
+      const unsubscribe = watchUser(user.id, (updatedUser) => {
+        setUser(updatedUser);
+      });
+
+      return () => unsubscribe();
+    }
+
+    return () => {};
+  }, [user?.id]);
 
   async function signOut() {
     if (token?.length) {

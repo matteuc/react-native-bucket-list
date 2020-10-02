@@ -4,7 +4,14 @@ export enum AppScreens {
 }
 
 export type AppUser = {
+  id: string;
   name: string;
   email: string;
   image: string;
 } | null;
+
+export type AppUserForm = {
+  name: string;
+  email: string;
+  image: string;
+};

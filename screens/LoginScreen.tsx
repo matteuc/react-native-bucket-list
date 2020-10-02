@@ -36,12 +36,12 @@ const LoginScreen: React.FC = () => {
   const { signIn, user } = useAuth();
 
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       navigation.reset({
         routes: [{ name: AppScreens.HOME }],
       });
     }
-  }, [user, navigation]);
+  }, [user?.id, navigation]);
 
   return (
     <ThemedView style={styles.container}>
