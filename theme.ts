@@ -21,6 +21,7 @@ const darkTheme = {
     ...DarkTheme.colors,
     ...customColors,
     background: '#000d1a',
+    primary: '#1f71ff',
   },
 };
 

@@ -52,8 +52,15 @@ const CreateWishScreen: React.FC = () => {
           <View style={styles.form}>
             <View style={styles.formField}>
               <TextInput
-                label="Name"
-                placeholder="The name of my wish"
+                placeholder="Title"
+                underlineColor="transparent"
+                underlineColorAndroid="transparent"
+                style={{ backgroundColor: 'transparent', fontSize: 30 }}
+                theme={{
+                  colors: {
+                    primary: '#C0C0C0',
+                  },
+                }}
                 value={wish.name}
                 onChangeText={(name) =>
                   setWish({
@@ -66,7 +73,15 @@ const CreateWishScreen: React.FC = () => {
             <View style={styles.formField}>
               <TextInput
                 placeholder="I want to..."
-                label="Description"
+                multiline
+                underlineColor="transparent"
+                underlineColorAndroid="transparent"
+                style={{ backgroundColor: 'transparent', fontSize: 20 }}
+                theme={{
+                  colors: {
+                    primary: '#C0C0C0',
+                  },
+                }}
                 value={wish.description}
                 onChangeText={(description) =>
                   setWish({

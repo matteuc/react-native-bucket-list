@@ -5,7 +5,7 @@ import CreateWishScreen from './CreateWishScreen';
 import ViewEditWishScreen from './ViewEditWishScreen';
 
 type ScreenInfo = {
-  name: AppScreens;
+  name: AppScreens.HOME | AppScreens.LOGIN | AppScreens.VIEW_EDIT_WISH;
   component: () => JSX.Element;
   showHeader: boolean;
 };

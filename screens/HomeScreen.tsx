@@ -192,7 +192,9 @@ const HomeScreen: React.FC = () => {
                   <List.Item
                     style={{ backgroundColor: surface }}
                     onPress={() =>
-                      navigation.navigate(AppScreens.VIEW_EDIT_WISH)
+                      navigation.navigate(AppScreens.VIEW_EDIT_WISH, {
+                        wishId: wish.id,
+                      })
                     }
                     title={
                       <Text

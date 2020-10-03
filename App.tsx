@@ -5,11 +5,11 @@ import { StatusBar } from 'expo-status-bar';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
 import { ThemeProvider } from './context/ThemeProvider';
 import { unAuthScreens, authScreens } from './screens';
-import { AppScreens } from './constants';
+import { AppScreens, AppScreenParamList } from './constants';
 import { AuthProvider, useAuth } from './context/AuthProvider';
 import { WishProvider } from './context/WishProvider';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<AppScreenParamList>();
 
 function App() {
   const { user } = useAuth();

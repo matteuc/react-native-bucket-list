@@ -34,3 +34,11 @@ export type Wish = {
 
 export const WISHES_COLLECTION = 'wishes';
 export const USERS_COLLECTION = 'users';
+
+export type AppScreenParamList = {
+  [AppScreens.HOME]: undefined;
+  [AppScreens.LOGIN]: undefined;
+  [AppScreens.VIEW_EDIT_WISH]: {
+    wishId: string;
+  };
+};
