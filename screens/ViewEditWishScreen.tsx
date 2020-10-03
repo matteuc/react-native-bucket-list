@@ -2,11 +2,12 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, BackHandler, ScrollView } from 'react-native';
+import { StyleSheet, View, BackHandler } from 'react-native';
 import {
   Button,
   Caption,
   IconButton,
+  Snackbar,
   Text,
   TextInput,
   Title,
@@ -15,15 +16,24 @@ import {
 import TimeAgo from 'react-native-timeago';
 import ThemedScreen from '../components/ThemedScreen';
 import { AppScreens, AppScreenParamList, WishForm } from '../constants';
+import { useTheme } from '../context/ThemeProvider';
 import { useWish } from '../context/WishProvider';
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
+  root: {
+    height: '100%',
+    position: 'relative',
+  },
   container: {
     flex: 1,
     padding: 20,
   },
   form: {
     width: '100%',
+    height: '100%',
   },
   formField: {
     paddingTop: 20,
@@ -46,6 +56,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
+  },
+  titleFormField: {
+    backgroundColor: 'transparent',
+    fontSize: 30,
+  },
+  descriptionFormField: {
+    backgroundColor: 'transparent',
+    fontSize: 20,
+  },
+  titleSection: {
+    fontSize: 30,
+  },
+  descriptionSection: {
+    fontSize: 20,
+  },
+  strikeThrough: {
+    textDecorationLine: 'line-through',
   },
 });
 
@@ -77,13 +104,25 @@ const EditWishScreen: React.FC = () => {
   const [wishValid, setWishValid] = useState<boolean>(false);
 
   const { handleUpdateWish: updateWish, getWish } = useWish();
+  const {
+    customColors: { muted, secondaryAction },
+  } = useTheme();
+
   const navigation = useNavigation();
+
   const {
     params: { wishId },
   } = useRoute<ViewEditWishScreenRouteProp>();
 
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackBarOpen] = useState(false);
+
   const handleUpdateWish = async () => {
+    setLoading(true);
+
     await updateWish(wishId, wish);
+
+    setLoading(false);
 
     navigation.goBack();
   };
@@ -112,12 +151,22 @@ const EditWishScreen: React.FC = () => {
     setInitialWish(thisWishForm);
   }, [wishId, getWish]);
 
+  function goBack() {
+    if (!wishValid) {
+      navigation.goBack();
+    } else {
+      setSnackBarOpen(true);
+    }
+
+    return true;
+  }
+
   useEffect(() => {
     function handleBackButtonClick() {
       if (!wishValid) {
         navigation.goBack();
       } else {
-        console.log('SHOW UNSAVED CHANGES');
+        setSnackBarOpen(true);
       }
 
       return true;
@@ -132,73 +181,88 @@ const EditWishScreen: React.FC = () => {
     };
   }, [wish, navigation, wishValid]);
 
+  useEffect(() => {
+    setSnackBarOpen(false);
+  }, [wish]);
+
   return (
-    <ThemedScreen style={{ height: '100%' }}>
-      <ScrollView>
-        <View style={styles.form}>
-          <View style={styles.formField}>
-            <TextInput
-              placeholder="Title"
-              underlineColor="transparent"
-              underlineColorAndroid="transparent"
-              style={{ backgroundColor: 'transparent', fontSize: 30 }}
-              theme={{
-                colors: {
-                  primary: '#C0C0C0',
-                },
-              }}
-              value={wish.name}
-              onChangeText={(name) =>
-                setWish({
-                  ...wish,
-                  name,
-                })
-              }
-            />
-          </View>
-          <View style={styles.formField}>
-            <TextInput
-              placeholder="I want to..."
-              multiline
-              underlineColor="transparent"
-              underlineColorAndroid="transparent"
-              style={{ backgroundColor: 'transparent', fontSize: 20 }}
-              theme={{
-                colors: {
-                  primary: '#C0C0C0',
-                },
-              }}
-              value={wish.description}
-              onChangeText={(description) =>
-                setWish({
-                  ...wish,
-                  description,
-                })
-              }
-            />
-          </View>
-          <View style={styles.formField}>
-            <Button
-              disabled={!wishValid}
-              mode="contained"
-              style={styles.button}
-              onPress={handleUpdateWish}
-            >
-              Update
-            </Button>
-          </View>
-          <View style={styles.formField}>
-            <Button
-              mode="contained"
-              color="#CDCDCD"
-              style={styles.button}
-              onPress={() => navigation.goBack()}
-            >
-              Cancel
-            </Button>
-          </View>
+    <ThemedScreen style={styles.root}>
+      <Snackbar
+        visible={snackbarOpen}
+        onDismiss={() => {}}
+        action={{
+          label: 'Yes',
+          onPress: () => {
+            navigation.goBack();
+          },
+        }}
+      >
+        Leave with unsaved changes?
+      </Snackbar>
+
+      <View style={styles.form}>
+        <View style={styles.formField}>
+          <TextInput
+            placeholder="Title"
+            underlineColor="transparent"
+            underlineColorAndroid="transparent"
+            style={styles.titleFormField}
+            theme={{
+              colors: {
+                primary: muted,
+              },
+            }}
+            value={wish.name}
+            onChangeText={(name) =>
+              setWish({
+                ...wish,
+                name,
+              })
+            }
+          />
         </View>
-      </ScrollView>
+        <View style={styles.formField}>
+          <TextInput
+            placeholder="I want to..."
+            multiline
+            underlineColor="transparent"
+            underlineColorAndroid="transparent"
+            style={styles.descriptionFormField}
+            theme={{
+              colors: {
+                primary: muted,
+              },
+            }}
+            value={wish.description}
+            onChangeText={(description) =>
+              setWish({
+                ...wish,
+                description,
+              })
+            }
+          />
+        </View>
+        <View style={styles.formField}>
+          <Button
+            disabled={!wishValid || loading}
+            mode="contained"
+            style={styles.button}
+            onPress={handleUpdateWish}
+          >
+            Update
+          </Button>
+        </View>
+        <View style={styles.formField}>
+          <Button
+            mode="contained"
+            color={secondaryAction}
+            style={styles.button}
+            onPress={goBack}
+          >
+            Cancel
+          </Button>
+        </View>
+      </View>
     </ThemedScreen>
   );
 };
@@ -220,22 +284,26 @@ const ViewWishScreen: React.FC = () => {
     await handleMarkWish(wishId, !wishCompleted);
   };
 
+  const {
+    customColors: { success, secondaryAction },
+  } = useTheme();
+
   return (
-    <ThemedScreen style={{ height: '100%' }}>
+    <ThemedScreen style={styles.root}>
       <>
         <View style={styles.row}>
           <TouchableRipple
-            style={{ flex: 1 }}
+            style={styles.flex}
             onPress={() => {}}
             onLongPress={() => navigation.navigate(ViewEditScreens.EDIT)}
           >
             <View style={styles.textField}>
               <Title
                 numberOfLines={1}
-                style={{
-                  fontSize: 30,
-                  textDecorationLine: wishCompleted ? 'line-through' : 'none',
-                }}
+                style={StyleSheet.flatten([
+                  styles.titleSection,
+                  wishCompleted ? styles.strikeThrough : {},
+                ])}
               >
                 {wish?.name}
               </Title>
@@ -243,7 +311,7 @@ const ViewWishScreen: React.FC = () => {
           </TouchableRipple>
           <IconButton
             onPress={handleCompleteWish}
-            color={wishCompleted ? 'green' : '#CDCDCD'}
+            color={wishCompleted ? success : secondaryAction}
             icon="check-circle"
           />
         </View>
@@ -266,7 +334,7 @@ const ViewWishScreen: React.FC = () => {
           onLongPress={() => navigation.navigate(ViewEditScreens.EDIT)}
         >
           <View style={styles.textField}>
-            <Text style={{ fontSize: 20 }}>{wish?.description}</Text>
+            <Text style={styles.descriptionSection}>{wish?.description}</Text>
           </View>
         </TouchableRipple>
       </>

@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import ThemedScreen from '../components/ThemedScreen';
 import { WishForm } from '../constants';
+import { useTheme } from '../context/ThemeProvider';
 import { useWish } from '../context/WishProvider';
 
 const styles = StyleSheet.create({
@@ -18,6 +19,14 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
   },
+  titleFormField: {
+    backgroundColor: 'transparent',
+    fontSize: 30,
+  },
+  descriptionFormField: {
+    backgroundColor: 'transparent',
+    fontSize: 20,
+  },
   button: {
     width: '100%',
   },
@@ -31,12 +40,20 @@ const CreateWishScreen: React.FC = () => {
 
   const [wish, setWish] = useState<WishForm>(initialForm);
   const [wishValid, setWishValid] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
   const { handleCreateWish: createWish } = useWish();
   const navigation = useNavigation();
+  const {
+    customColors: { muted },
+  } = useTheme();
 
   const handleCreateWish = async () => {
+    setLoading(true);
+
     await createWish(wish);
+
+    setLoading(false);
 
     navigation.goBack();
   };
@@ -55,10 +72,10 @@ const CreateWishScreen: React.FC = () => {
                 placeholder="Title"
                 underlineColor="transparent"
                 underlineColorAndroid="transparent"
-                style={{ backgroundColor: 'transparent', fontSize: 30 }}
+                style={styles.titleFormField}
                 theme={{
                   colors: {
-                    primary: '#C0C0C0',
+                    primary: muted,
                   },
                 }}
                 value={wish.name}
@@ -76,10 +93,10 @@ const CreateWishScreen: React.FC = () => {
                 multiline
                 underlineColor="transparent"
                 underlineColorAndroid="transparent"
-                style={{ backgroundColor: 'transparent', fontSize: 20 }}
+                style={styles.descriptionFormField}
                 theme={{
                   colors: {
-                    primary: '#C0C0C0',
+                    primary: muted,
                   },
                 }}
                 value={wish.description}
@@ -93,7 +110,7 @@ const CreateWishScreen: React.FC = () => {
             </View>
             <View style={styles.formField}>
               <Button
-                disabled={!wishValid}
+                disabled={!wishValid || loading}
                 mode="contained"
                 style={styles.button}
                 onPress={handleCreateWish}

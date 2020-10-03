@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useContext, useState } from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
-import { darkTheme, theme } from '../theme';
+import { AppTheme, darkTheme, theme } from '../theme';
 
-interface ThemeContextProps extends ReactNativePaper.Theme {
+export interface ThemeContextProps extends AppTheme {
   handleToggleTheme: () => void;
   isDark: boolean;
 }
