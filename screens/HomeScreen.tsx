@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import {
   Appbar,
   Avatar,
+  Caption,
   List,
   Text,
   TouchableRipple,
@@ -116,101 +117,135 @@ const HomeScreen: React.FC = () => {
           icon="add"
           onPress={() => navigation.navigate(AppScreens.CREATE_WISH)}
         />
-        <View style={{ width: '100%' }}>
-          <List.Section>
-            {wishes.map((wish) => (
-              <SwipeRow
-                ref={swipeRowRefs[wish.id]}
-                key={`wish-${wish.name}`}
-                leftOpenValue={75}
-                rightOpenValue={-75}
-                stopLeftSwipe={100}
-                stopRightSwipe={-100}
-              >
-                <View style={styles.rowBack}>
-                  <View
-                    style={{
-                      height: '100%',
-                      flex: 1,
-                      backgroundColor: 'green',
-                      alignItems: 'flex-start',
-                    }}
-                  >
-                    <TouchableRipple
-                      onPress={() =>
-                        handleActionTap(wish.id, () =>
-                          handleMarkWish(wish.id, true)
-                        )
-                      }
+        {wishes.length ? (
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+          >
+            <List.Section>
+              {wishes.map((wish) => (
+                <SwipeRow
+                  ref={swipeRowRefs[wish.id]}
+                  key={`wish-${wish.name}`}
+                  leftOpenValue={75}
+                  rightOpenValue={-75}
+                  stopLeftSwipe={100}
+                  stopRightSwipe={-100}
+                >
+                  <View style={styles.rowBack}>
+                    <View
+                      style={{
+                        height: '100%',
+                        flex: 1,
+                        backgroundColor: 'green',
+                        alignItems: 'flex-start',
+                      }}
                     >
-                      <View
-                        style={{
-                          height: '100%',
-                          width: 75,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
+                      <TouchableRipple
+                        onPress={() =>
+                          handleActionTap(wish.id, () =>
+                            handleMarkWish(wish.id, true)
+                          )
+                        }
                       >
-                        <Icon name="check" color="white" />
-                      </View>
-                    </TouchableRipple>
-                  </View>
-                  <View
-                    style={{
-                      height: '100%',
-                      flex: 1,
-                      backgroundColor: 'red',
-                      alignItems: 'flex-end',
-                    }}
-                  >
-                    <TouchableRipple
-                      onPress={() =>
-                        handleActionTap(wish.id, () =>
-                          handleDeleteWish(wish.id)
-                        )
-                      }
+                        <View
+                          style={{
+                            height: '100%',
+                            width: 75,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Icon name="check" color="white" />
+                        </View>
+                      </TouchableRipple>
+                    </View>
+                    <View
+                      style={{
+                        height: '100%',
+                        flex: 1,
+                        backgroundColor: 'red',
+                        alignItems: 'flex-end',
+                      }}
                     >
-                      <View
-                        style={{
-                          height: '100%',
-                          width: 75,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
+                      <TouchableRipple
+                        onPress={() =>
+                          handleActionTap(wish.id, () =>
+                            handleDeleteWish(wish.id)
+                          )
+                        }
                       >
-                        <Icon name="delete" color="white" />
-                      </View>
-                    </TouchableRipple>
+                        <View
+                          style={{
+                            height: '100%',
+                            width: 75,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <Icon name="delete" color="white" />
+                        </View>
+                      </TouchableRipple>
+                    </View>
                   </View>
-                </View>
-                <List.Item
-                  style={{ backgroundColor: surface }}
-                  onPress={() => {}}
-                  title={
-                    <Text
-                      style={
-                        wish.completed
-                          ? {
-                              textDecorationLine: 'line-through',
-                              textDecorationStyle: 'solid',
-                            }
-                          : null
-                      }
-                    >
-                      {wish.name}
-                    </Text>
+                  <List.Item
+                    style={{ backgroundColor: surface }}
+                    onPress={() =>
+                      navigation.navigate(AppScreens.VIEW_EDIT_WISH)
+                    }
+                    title={
+                      <Text
+                        style={
+                          wish.completed
+                            ? {
+                                textDecorationLine: 'line-through',
+                                textDecorationStyle: 'solid',
+                              }
+                            : null
+                        }
+                      >
+                        {wish.name}
+                      </Text>
+                    }
+                    description={
+                      <TimeAgo
+                        time={
+                          wish.completed ? wish.completedAt : wish.createdAt
+                        }
+                      />
+                    }
+                    left={(props) => <List.Icon {...props} icon="star" />}
+                  />
+                </SwipeRow>
+              ))}
+            </List.Section>
+          </View>
+        ) : (
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              ...(!wishes.length
+                ? {
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }
-                  description={
-                    <TimeAgo
-                      time={wish.completed ? wish.completedAt : wish.createdAt}
-                    />
-                  }
-                  left={(props) => <List.Icon {...props} icon="star" />}
-                />
-              </SwipeRow>
-            ))}
-          </List.Section>
-        </View>
+                : {}),
+            }}
+          >
+            <Caption
+              style={{
+                fontSize: 20,
+                marginBottom: 15,
+              }}
+            >
+              Nothing yet. Add a wish!
+            </Caption>
+            <Icon name="star" color="grey" size={50} />
+          </View>
+        )}
       </ThemedScreen>
     </>
   );

@@ -2,6 +2,7 @@ import HomeScreen from './HomeScreen';
 import { AppScreens } from '../constants';
 import LoginScreen from './LoginScreen';
 import CreateWishScreen from './CreateWishScreen';
+import ViewEditWishScreen from './ViewEditWishScreen';
 
 type ScreenInfo = {
   name: AppScreens;
@@ -26,6 +27,11 @@ export const authScreens = [
   {
     name: AppScreens.CREATE_WISH,
     component: CreateWishScreen,
+    showHeader: true,
+  },
+  {
+    name: AppScreens.VIEW_EDIT_WISH,
+    component: ViewEditWishScreen,
     showHeader: true,
   },
 ] as Array<ScreenInfo>;

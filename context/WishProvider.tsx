@@ -52,7 +52,10 @@ const WishProvider: React.FC = ({ children }) => {
   ): Promise<void> => {
     if (!user?.id) return;
 
-    await updateWish(id, user?.id, { completed });
+    await updateWish(id, user?.id, {
+      completed,
+      ...(completed ? { completedAt: Date.now() } : {}),
+    });
   };
 
   const handleDeleteWish = async (id: string): Promise<void> => {
