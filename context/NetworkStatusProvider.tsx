@@ -1,18 +1,20 @@
-import React, { createContext, useEffect, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { NetworkProvider, NetworkConsumer } from 'react-native-offline';
 import { Snackbar } from 'react-native-paper';
 
 interface NetworkState {
   isConnected: boolean;
+  callNetworkAction: (f: Function) => () => void;
 }
 
-interface NetworkStatusProviderProps extends NetworkState {
+interface NetworkStatusProviderProps {
   isConnected: boolean;
   children: React.ReactNode;
 }
 
 const NetworkContext = createContext<NetworkState>({
   isConnected: false,
+  callNetworkAction: () => () => {},
 });
 
 const InternalNetworkStatusProvider: React.FC<NetworkStatusProviderProps> = ({
@@ -23,14 +25,18 @@ const InternalNetworkStatusProvider: React.FC<NetworkStatusProviderProps> = ({
 
   const onDismissSnackBar = () => setStatusVisible(false);
 
-  useEffect(() => {
-    setStatusVisible(true);
-  }, [isConnected]);
+  const callNetworkAction = (fn: Function) => () => {
+    if (isConnected) {
+      fn();
+    } else {
+      setStatusVisible(true);
+    }
+  };
 
   return (
-    <NetworkContext.Provider value={{ isConnected }}>
+    <NetworkContext.Provider value={{ isConnected, callNetworkAction }}>
       <Snackbar visible={statusVisible} onDismiss={onDismissSnackBar}>
-        You are {!isConnected ? 'not' : ''} connected!
+        You are currently offline. Please try again later!
       </Snackbar>
       {children}
     </NetworkContext.Provider>

@@ -7,6 +7,7 @@ import {
   deleteWish,
 } from '../utils/wishes';
 import { useAuth } from './AuthProvider';
+import { useNetwork } from './NetworkStatusProvider';
 
 interface WishContextProps {
   wishes: Array<Wish>;
@@ -30,9 +31,10 @@ const WishProvider: React.FC = ({ children }) => {
   const { user } = useAuth();
   const [wishes, setWishes] = useState<Array<Wish>>([]);
   const [wishMap, setWishMap] = useState<Record<Wish['id'], Wish>>({});
+  const { isConnected } = useNetwork();
 
   useEffect(() => {
-    if (user?.id) {
+    if (user?.id && isConnected) {
       const unsubscribe = watchWishes(user.id, (updatedWishes) => {
         setWishes(updatedWishes);
         setWishMap(
@@ -47,7 +49,7 @@ const WishProvider: React.FC = ({ children }) => {
     }
 
     return () => {};
-  }, [user?.id]);
+  }, [user?.id, isConnected]);
 
   const getWish = (id: string) => wishMap[id];
 

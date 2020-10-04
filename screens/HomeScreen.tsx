@@ -12,12 +12,14 @@ import { useNavigation } from '@react-navigation/core';
 import { SwipeRow } from 'react-native-swipe-list-view';
 import TimeAgo from 'react-native-timeago';
 import { Icon } from 'react-native-elements';
+import { MaterialCommunityIcons as MCIcon } from '@expo/vector-icons';
 import ThemedScreen from '../components/ThemedScreen';
 import { AppScreens } from '../constants';
 import Fab from '../components/Fab';
 import { useTheme, ThemeContextProps } from '../context/ThemeProvider';
 import { useAuth } from '../context/AuthProvider';
 import { useWish } from '../context/WishProvider';
+import { useNetwork } from '../context/NetworkStatusProvider';
 
 const useStyles = StyleSheet.create(
   ({ colors, customColors }: ThemeContextProps) => ({
@@ -94,7 +96,7 @@ const Nav: React.FC = () => {
   const { signOut, user } = useAuth();
 
   return (
-    <Appbar.Header style={styles.nav}>
+    <Appbar.Header style={styles.nav} statusBarHeight={20}>
       <Avatar.Image
         source={{
           uri: user?.image,
@@ -117,6 +119,7 @@ const Nav: React.FC = () => {
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { callNetworkAction } = useNetwork();
   const { wishes, handleMarkWish, handleDeleteWish } = useWish();
   const theme = useTheme();
 
@@ -141,10 +144,11 @@ const HomeScreen: React.FC = () => {
     );
   }, [wishes]);
 
-  const handleActionTap = (id: string, action?: Function) => {
-    swipeRowRefs[id].current?.closeRow();
-    if (action) action();
-  };
+  const handleActionTap = (id: string, action?: Function) =>
+    callNetworkAction(() => {
+      swipeRowRefs[id].current?.closeRow();
+      if (action) action();
+    })();
 
   return (
     <>
@@ -152,7 +156,9 @@ const HomeScreen: React.FC = () => {
       <ThemedScreen style={styles.container}>
         <Fab
           icon="add"
-          onPress={() => navigation.navigate(AppScreens.CREATE_WISH)}
+          onPress={callNetworkAction(() =>
+            navigation.navigate(AppScreens.CREATE_WISH)
+          )}
         />
         {wishes.length ? (
           <View style={styles.listSection}>
@@ -176,12 +182,20 @@ const HomeScreen: React.FC = () => {
                       <TouchableRipple
                         onPress={() =>
                           handleActionTap(wish.id, () =>
-                            handleMarkWish(wish.id, true)
+                            handleMarkWish(wish.id, !wish.completed)
                           )
                         }
                       >
                         <View style={styles.listItemSectionIcon}>
-                          <Icon name="check" color="white" />
+                          <MCIcon
+                            name={
+                              wish.completed
+                                ? 'check-circle'
+                                : 'check-circle-outline'
+                            }
+                            size={25}
+                            color="white"
+                          />
                         </View>
                       </TouchableRipple>
                     </View>

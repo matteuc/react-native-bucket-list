@@ -16,6 +16,7 @@ import {
 import TimeAgo from 'react-native-timeago';
 import ThemedScreen from '../components/ThemedScreen';
 import { AppScreens, AppScreenParamList, WishForm } from '../constants';
+import { useNetwork } from '../context/NetworkStatusProvider';
 import { useTheme } from '../context/ThemeProvider';
 import { useWish } from '../context/WishProvider';
 
@@ -92,6 +93,8 @@ type ViewEditWishScreenRouteProp = RouteProp<
   AppScreens.VIEW_EDIT_WISH
 >;
 
+const ViewEditStack = createStackNavigator();
+
 const EditWishScreen: React.FC = () => {
   const initialForm = {
     name: '',
@@ -100,6 +103,7 @@ const EditWishScreen: React.FC = () => {
 
   const [initialWish, setInitialWish] = useState<WishForm>(initialForm);
   const [wish, setWish] = useState<WishForm>(initialForm);
+  const { callNetworkAction } = useNetwork();
 
   const [wishValid, setWishValid] = useState<boolean>(false);
 
@@ -117,7 +121,7 @@ const EditWishScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackBarOpen] = useState(false);
 
-  const handleUpdateWish = async () => {
+  const handleUpdateWish = callNetworkAction(async () => {
     setLoading(true);
 
     await updateWish(wishId, wish);
@@ -125,7 +129,7 @@ const EditWishScreen: React.FC = () => {
     setLoading(false);
 
     navigation.goBack();
-  };
+  });
 
   useEffect(() => {
     setWishValid(
@@ -276,13 +280,14 @@ const ViewWishScreen: React.FC = () => {
   const [wishCompleted, setWishCompleted] = useState(
     getWish(wishId)?.completed
   );
+  const { callNetworkAction } = useNetwork();
 
   const wish = getWish(wishId);
 
-  const handleCompleteWish = async () => {
+  const handleCompleteWish = callNetworkAction(async () => {
     setWishCompleted(!wishCompleted);
     await handleMarkWish(wishId, !wishCompleted);
-  };
+  });
 
   const {
     customColors: { success, secondaryAction },
@@ -354,8 +359,6 @@ const viewEditScreens = [
     showHeader: false,
   },
 ] as Array<ScreenInfo>;
-
-const ViewEditStack = createStackNavigator();
 
 const ViewEditWishScreen: React.FC = () => {
   const navigation = useNavigation();
