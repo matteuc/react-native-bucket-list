@@ -1,27 +1,54 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { StatusBar } from 'expo-status-bar';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
 import { ThemeProvider } from './context/ThemeProvider';
-import screens from './screens';
-import { AppScreens } from './constants';
-import { AuthProvider } from './context/AuthProvider';
+import { unAuthScreens, authScreens } from './screens';
+import { AppScreens, AppScreenParamList } from './constants';
+import { AuthProvider, useAuth } from './context/AuthProvider';
+import { WishProvider } from './context/WishProvider';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<AppScreenParamList>();
 
 function App() {
+  const { user } = useAuth();
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={AppScreens.LOGIN} headerMode="none">
-        {screens.map(({ name, component }) => (
-          <Stack.Screen
-            key={`screen-${name}`}
-            name={name}
-            component={component}
-          />
-        ))}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        {user ? (
+          <Stack.Navigator initialRouteName={AppScreens.HOME}>
+            {authScreens.map(({ name, component, showHeader }) => (
+              <Stack.Screen
+                options={{
+                  headerShown: showHeader,
+                }}
+                key={`screen-${name}`}
+                name={name}
+                component={component}
+              />
+            ))}
+          </Stack.Navigator>
+        ) : (
+          <Stack.Navigator
+            initialRouteName={AppScreens.LOGIN}
+            headerMode="none"
+          >
+            {unAuthScreens.map(({ name, component, showHeader }) => (
+              <Stack.Screen
+                options={{
+                  headerShown: showHeader,
+                }}
+                key={`screen-${name}`}
+                name={name}
+                component={component}
+              />
+            ))}
+          </Stack.Navigator>
+        )}
+      </NavigationContainer>
+      <StatusBar style="auto" />
+    </>
   );
 }
 
@@ -30,7 +57,9 @@ export default function Main() {
     <ThemeProvider>
       <NetworkStatusProvider>
         <AuthProvider>
-          <App />
+          <WishProvider>
+            <App />
+          </WishProvider>
         </AuthProvider>
       </NetworkStatusProvider>
     </ThemeProvider>

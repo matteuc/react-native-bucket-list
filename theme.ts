@@ -1,8 +1,15 @@
 import { DefaultTheme, DarkTheme } from 'react-native-paper';
 
-const customColors = {
+const ovverideColors = {
   primary: '#00008B',
   accent: '#f1c40f',
+};
+
+const customColors = {
+  secondaryAction: '#CDCDCD',
+  success: 'green',
+  muted: '#C0C0C0',
+  danger: 'red',
 };
 
 const theme = {
@@ -10,8 +17,9 @@ const theme = {
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,
-    ...customColors,
+    ...ovverideColors,
   },
+  customColors,
 };
 
 const darkTheme = {
@@ -19,9 +27,15 @@ const darkTheme = {
   roundness: 2,
   colors: {
     ...DarkTheme.colors,
-    ...customColors,
+    ...ovverideColors,
     background: '#000d1a',
+    primary: '#1f71ff',
   },
+  customColors,
 };
+
+export interface AppTheme extends ReactNativePaper.Theme {
+  customColors: typeof customColors;
+}
 
 export { theme, darkTheme };

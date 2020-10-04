@@ -13,6 +13,8 @@ module.exports = {
   ],
   rules: {
     'react/prop-types': 0,
+    'react/require-default-props': 0,
+    'react/jsx-props-no-spreading': 0,
     'global-require': 0,
     'react/style-prop-object': 0,
     '@typescript-eslint/no-unused-vars': 'off',

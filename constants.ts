@@ -1,6 +1,8 @@
 export enum AppScreens {
   HOME = 'Home',
   LOGIN = 'Login',
+  CREATE_WISH = 'Create Wish',
+  VIEW_EDIT_WISH = 'View Wish',
 }
 
 export type AppUser = {
@@ -14,4 +16,29 @@ export type AppUserForm = {
   name: string;
   email: string;
   image: string;
+};
+
+export type WishForm = {
+  name: string;
+  description: string;
+};
+
+export type Wish = {
+  id: string;
+  completed: boolean;
+  name: string;
+  description: string;
+  createdAt: number;
+  completedAt: number;
+};
+
+export const WISHES_COLLECTION = 'wishes';
+export const USERS_COLLECTION = 'users';
+
+export type AppScreenParamList = {
+  [AppScreens.HOME]: undefined;
+  [AppScreens.LOGIN]: undefined;
+  [AppScreens.VIEW_EDIT_WISH]: {
+    wishId: string;
+  };
 };

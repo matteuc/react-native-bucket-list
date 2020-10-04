@@ -1,12 +1,10 @@
-import { AppUser, AppUserForm } from '../constants';
+import { AppUser, AppUserForm, USERS_COLLECTION } from '../constants';
 import {
   getDocument,
   updateDocument,
   createDocument,
   onDocumentSnapshot,
 } from './firestore';
-
-const USERS_COLLECTION = 'users';
 
 export async function getUser(userId: string): Promise<AppUser> {
   return getDocument<AppUser>(USERS_COLLECTION, userId);

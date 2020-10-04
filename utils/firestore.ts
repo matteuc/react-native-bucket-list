@@ -1,14 +1,14 @@
-import { YellowBox } from 'react-native';
+import { LogBox } from 'react-native';
 import { db } from '../firebase';
 
-YellowBox.ignoreWarnings([
+LogBox.ignoreLogs([
   'Setting a timer', // Suppress Firebase onSnapshot errors
 ]);
 
-export async function onCollectionSnapshot<T>(
+export function onCollectionSnapshot<T>(
   path: string,
   onChange: (data: Array<T>) => any
-) {
+): firebase.Unsubscribe {
   return db.collection(path).onSnapshot((collectionSnap) => {
     const items: Array<T> = [];
 
@@ -55,6 +55,10 @@ export async function updateDocument<T>(
   update: Partial<T>
 ): Promise<void> {
   await db.collection(path).doc(id).update(update);
+}
+
+export async function deleteDocument(path: string, id: string): Promise<void> {
+  await db.collection(path).doc(id).delete();
 }
 
 export async function createDocument<T>(
