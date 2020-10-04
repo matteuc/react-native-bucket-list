@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Image, TouchableNativeFeedback } from 'react-native';
-import { Headline } from 'react-native-paper';
 import ThemedScreen from '../components/ThemedScreen';
-
+import logoTitle from '../assets/title-logo.png';
 import logo from '../assets/icon.png';
 import googleSignInButton from '../assets/signin-button.png';
 import { useAuth } from '../context/AuthProvider';
@@ -27,6 +26,10 @@ const styles = StyleSheet.create({
     width: '100%',
     resizeMode: 'contain',
   },
+  title: {
+    width: '100%',
+    resizeMode: 'contain',
+  },
 });
 
 const LoginScreen: React.FC = () => {
@@ -35,7 +38,7 @@ const LoginScreen: React.FC = () => {
   return (
     <ThemedScreen style={styles.container}>
       <View style={styles.innerView}>
-        <Headline>buckets</Headline>
+        <Image source={logoTitle} style={styles.title} />
         <Image source={logo} />
 
         <TouchableNativeFeedback
