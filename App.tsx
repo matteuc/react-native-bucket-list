@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
@@ -7,7 +7,7 @@ import { unAuthScreens, authScreens } from './screens';
 import { AppScreens, AppScreenParamList } from './constants';
 import { AuthProvider, useAuth } from './context/AuthProvider';
 import { WishProvider } from './context/WishProvider';
-
+import * as ScreenOrientation from 'expo-screen-orientation';
 const Stack = createStackNavigator<AppScreenParamList>();
 
 function App() {
@@ -53,6 +53,9 @@ function App() {
 }
 
 export default function Main() {
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+  }, []);
   return (
     <ThemeProvider>
       <NetworkStatusProvider>

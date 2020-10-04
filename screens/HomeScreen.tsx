@@ -1,5 +1,12 @@
 import React, { createRef, useEffect, useState } from 'react';
-import { Platform, StatusBar, StyleProp, StyleSheet, View } from 'react-native';
+import {
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleProp,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   Appbar,
   Avatar,
@@ -164,12 +171,12 @@ const HomeScreen: React.FC = () => {
           )}
         />
         {wishes.length ? (
-          <View style={styles.listSection}>
+          <ScrollView style={styles.listSection}>
             <List.Section>
               {wishes.map((wish) => (
                 <SwipeRow
                   ref={swipeRowRefs[wish.id]}
-                  key={`wish-${wish.name}`}
+                  key={`wish-${wish.id}`}
                   leftOpenValue={75}
                   rightOpenValue={-75}
                   stopLeftSwipe={100}
@@ -247,7 +254,7 @@ const HomeScreen: React.FC = () => {
                 </SwipeRow>
               ))}
             </List.Section>
-          </View>
+          </ScrollView>
         ) : (
           <View style={styles.emptyView}>
             <Caption style={styles.emptyCaption}>
