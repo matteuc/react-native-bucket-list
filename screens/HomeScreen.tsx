@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useState } from 'react';
-import { StyleProp, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleProp, StyleSheet, View } from 'react-native';
 import {
   Appbar,
   Avatar,
@@ -96,7 +96,10 @@ const Nav: React.FC = () => {
   const { signOut, user } = useAuth();
 
   return (
-    <Appbar.Header style={styles.nav} statusBarHeight={20}>
+    <Appbar.Header
+      style={styles.nav}
+      statusBarHeight={Platform.OS === 'android' ? StatusBar.currentHeight : 0}
+    >
       <Avatar.Image
         source={{
           uri: user?.image,

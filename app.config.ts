@@ -6,4 +6,7 @@ export default {
   extra: {
     AND_CLIENT_ID: process.env.AND_CLIENT_ID,
   },
+  android: {
+    package: 'com.matteuc.buckets',
+  },
 };
