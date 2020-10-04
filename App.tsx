@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
 import { ThemeProvider } from './context/ThemeProvider';
 import { unAuthScreens, authScreens } from './screens';
@@ -47,7 +46,6 @@ function App() {
           </Stack.Navigator>
         )}
       </NavigationContainer>
-      <StatusBar style="auto" />
     </>
   );
 }

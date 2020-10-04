@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   button: {
-    width: '100%',
+    width: '95%',
     resizeMode: 'contain',
   },
   title: {
-    width: '100%',
+    width: '90%',
     resizeMode: 'contain',
   },
 });

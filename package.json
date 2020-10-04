@@ -11,6 +11,7 @@
     "lint:all": "pretty-quick --staged && yarn run lint"
   },
   "dependencies": {
+    "@expo/vector-icons": "^10.0.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/netinfo": "5.9.6",
     "@react-navigation/core": "^5.12.4",

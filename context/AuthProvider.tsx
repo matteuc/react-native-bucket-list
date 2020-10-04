@@ -4,16 +4,17 @@ import { auth } from 'firebase';
 import { AppUser } from '../constants';
 import config from '../config';
 import { createUser, getUser, watchUser } from '../utils/users';
+import { useNetwork } from './NetworkStatusProvider';
 
 interface AuthContextProps {
-  signIn: () => Promise<void>;
-  signOut: () => Promise<void>;
+  signIn: () => void;
+  signOut: () => void;
   user: AppUser;
 }
 
 const AuthContext = createContext<AuthContextProps>({
-  signIn: async () => {},
-  signOut: async () => {},
+  signIn: () => {},
+  signOut: () => {},
   user: null,
 });
 
@@ -27,8 +28,9 @@ const googleSignInConfig: Google.GoogleLogInConfig = {
 const AuthProvider: React.FC = ({ children }) => {
   const [token, setToken] = useState<string | null>('');
   const [user, setUser] = useState<AppUser>(null);
+  const { callNetworkAction } = useNetwork();
 
-  async function signIn() {
+  const signIn = callNetworkAction(async () => {
     try {
       const result = await Google.logInAsync(googleSignInConfig);
 
@@ -69,7 +71,7 @@ const AuthProvider: React.FC = ({ children }) => {
     } catch (e) {
       alert(e);
     }
-  }
+  });
 
   useEffect(() => {
     if (user?.id) {
@@ -83,13 +85,13 @@ const AuthProvider: React.FC = ({ children }) => {
     return () => {};
   }, [user?.id]);
 
-  async function signOut() {
+  const signOut = callNetworkAction(async () => {
     if (token?.length) {
       await Google.logOutAsync({ ...googleSignInConfig, accessToken: token });
       setToken(null);
       setUser(null);
     }
-  }
+  });
 
   return (
     <AuthContext.Provider value={{ signIn, signOut, user }}>
