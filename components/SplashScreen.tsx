@@ -12,7 +12,7 @@ const SplashScreen: React.FC = () => {
 
   return (
     <View>
-      <Image source={splash} style={styles.image} resizeMode={'cover'} />
+      <Image source={splash} style={styles.image} resizeMode="cover" />
     </View>
   );
 };
