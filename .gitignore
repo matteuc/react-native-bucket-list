@@ -11,6 +11,7 @@ web-build/
 serviceAccount.json
 google-services.json
 .env 
+app.json
 
 # macOS
 .DS_Store

@@ -18,7 +18,12 @@
     },
     "android": {
       "package": "com.matteuc.buckets",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "GOOGLE_CERTIFICATE_HASH"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

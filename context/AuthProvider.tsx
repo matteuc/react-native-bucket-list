@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Google from 'expo-google-app-auth';
 import { auth } from 'firebase';
+import * as SplashScreen from 'expo-splash-screen';
 import { AppUser } from '../constants';
 import config from '../config';
 import { createUser, getUser, watchUser } from '../utils/users';
@@ -22,11 +23,11 @@ const googleSignInConfig: Google.GoogleLogInConfig = {
   behavior: 'system',
   // iosClientId: IOS_CLIENT_ID,
   androidClientId: config.AND_CLIENT_ID,
+  androidStandaloneAppClientId: config.AND_CLIENT_ID_PROD,
   scopes: ['profile', 'email'],
 };
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [token, setToken] = useState<string | null>('');
   const [user, setUser] = useState<AppUser>(null);
   const { callNetworkAction } = useNetwork();
 
@@ -42,8 +43,6 @@ const AuthProvider: React.FC = ({ children }) => {
         result.user.email &&
         result.user.id
       ) {
-        setToken(result.accessToken);
-
         const cred = await auth().signInWithCredential(
           auth.GoogleAuthProvider.credential(result.idToken)
         );
@@ -85,12 +84,27 @@ const AuthProvider: React.FC = ({ children }) => {
     return () => {};
   }, [user?.id]);
 
+  useEffect(() => {
+    return auth().onAuthStateChanged(async function (currentUser) {
+      if (currentUser) {
+        // User is signed in.
+
+        const existingUser = await getUser(currentUser.uid);
+
+        if (existingUser) {
+          setUser(existingUser);
+        } else {
+          setUser(null);
+        }
+      }
+
+      await SplashScreen.hideAsync();
+    });
+  }, [user?.id]);
+
   const signOut = callNetworkAction(async () => {
-    if (token?.length) {
-      await Google.logOutAsync({ ...googleSignInConfig, accessToken: token });
-      setToken(null);
-      setUser(null);
-    }
+    await auth().signOut();
+    setUser(null);
   });
 
   return (
