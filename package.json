@@ -11,6 +11,7 @@
     "lint:all": "pretty-quick --staged && yarn run lint"
   },
   "dependencies": {
+    "@expo/config": "^3.3.9",
     "@expo/vector-icons": "^10.0.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/netinfo": "5.9.6",
@@ -20,6 +21,7 @@
     "@types/firebase": "^3.2.1",
     "@types/react-native-dotenv": "^0.2.0",
     "@types/react-native-elements": "^0.18.0",
+    "@types/react-native-snap-carousel": "^3.8.2",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "dotenv": "^8.2.0",
     "eslint-config-airbnb-typescript": "^11.0.0",
@@ -53,10 +55,10 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-swipe-list-view": "^3.2.4",
     "react-native-timeago": "^0.5.0",
-    "react-native-web": "~0.13.12",
-    "@expo/config": "^3.3.9"
+    "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^2.0.0",
