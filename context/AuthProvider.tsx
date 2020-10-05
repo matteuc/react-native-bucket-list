@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Google from 'expo-google-app-auth';
 import { auth } from 'firebase';
 import * as SplashScreen from 'expo-splash-screen';
+import { Platform } from 'react-native';
 import { AppUser } from '../constants';
 import config from '../config';
 import { createUser, getUser, watchUser } from '../utils/users';
@@ -101,7 +102,12 @@ const AuthProvider: React.FC = ({ children }) => {
       }
 
       if (!authInitialized) {
-        await SplashScreen.hideAsync();
+        try {
+          // Expo SplashScreen only broken for Android
+          if (Platform.OS !== 'android') await SplashScreen.hideAsync();
+        } catch (e) {
+          if (__DEV__) console.warn(e);
+        }
         setAuthInitialized(true);
       }
     });

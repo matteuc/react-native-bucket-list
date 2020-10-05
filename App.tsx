@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as SplashScreen from 'expo-splash-screen';
+import { Platform } from 'react-native';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
 import { ThemeProvider, useTheme } from './context/ThemeProvider';
 import { unAuthScreens, authScreens } from './screens';
@@ -56,8 +57,21 @@ function App() {
 
 export default function Main() {
   useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
-    SplashScreen.preventAutoHideAsync();
+    async function init() {
+      try {
+        await ScreenOrientation.lockAsync(
+          ScreenOrientation.OrientationLock.PORTRAIT_UP
+        );
+
+        // Expo SplashScreen only broken for Android
+        if (Platform.OS !== 'android')
+          await SplashScreen.preventAutoHideAsync();
+      } catch (e) {
+        if (__DEV__) console.warn(e);
+      }
+    }
+
+    init();
   }, []);
   return (
     <ThemeProvider>
