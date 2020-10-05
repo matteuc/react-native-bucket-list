@@ -14,10 +14,17 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "BUNDLE_ID",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "IOS_URL_SCHEME"
+        }
+      }
     },
     "android": {
-      "package": "com.matteuc.buckets",
+      "package": "PACKAGE_NAME",
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {

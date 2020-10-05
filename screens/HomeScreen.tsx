@@ -1,6 +1,5 @@
 import React, { createRef, useEffect, useState } from 'react';
 import {
-  Platform,
   ScrollView,
   StatusBar,
   StyleProp,
@@ -103,10 +102,7 @@ const Nav: React.FC = () => {
   const { signOut, user } = useAuth();
 
   return (
-    <Appbar.Header
-      style={styles.nav}
-      statusBarHeight={Platform.OS === 'android' ? StatusBar.currentHeight : 0}
-    >
+    <Appbar.Header style={styles.nav} statusBarHeight={StatusBar.currentHeight}>
       <Avatar.Image
         source={{
           uri: user?.image,

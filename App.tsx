@@ -56,7 +56,7 @@ function App() {
 
 export default function Main() {
   useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     SplashScreen.preventAutoHideAsync();
   }, []);
   return (

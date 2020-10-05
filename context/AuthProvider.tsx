@@ -21,15 +21,17 @@ const AuthContext = createContext<AuthContextProps>({
 
 const googleSignInConfig: Google.GoogleLogInConfig = {
   behavior: 'system',
-  // iosClientId: IOS_CLIENT_ID,
+  iosClientId: config.IOS_CLIENT_ID,
   androidClientId: config.AND_CLIENT_ID,
   androidStandaloneAppClientId: config.AND_CLIENT_ID_PROD,
+  iosStandaloneAppClientId: config.IOS_CLIENT_ID_PROD,
   scopes: ['profile', 'email'],
 };
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<AppUser>(null);
   const { callNetworkAction } = useNetwork();
+  const [authInitialized, setAuthInitialized] = useState(false);
 
   const signIn = callNetworkAction(async () => {
     try {
@@ -98,9 +100,12 @@ const AuthProvider: React.FC = ({ children }) => {
         }
       }
 
-      await SplashScreen.hideAsync();
+      if (!authInitialized) {
+        await SplashScreen.hideAsync();
+        setAuthInitialized(true);
+      }
     });
-  }, [user?.id]);
+  }, [user?.id, authInitialized]);
 
   const signOut = callNetworkAction(async () => {
     await auth().signOut();
