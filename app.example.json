@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "react-native-bucket-list",
+    "slug": "react-native-bucket-list",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "BUNDLE_ID",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "IOS_URL_SCHEME"
+        }
+      }
+    },
+    "android": {
+      "package": "PACKAGE_NAME",
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "GOOGLE_CERTIFICATE_HASH"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": "A simple bucket list app."
+  }
+}

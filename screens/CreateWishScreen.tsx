@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
   },
   form: {
     width: '100%',
+    padding: '2%',
   },
   formField: {
     paddingTop: 20,

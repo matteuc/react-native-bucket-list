@@ -1,4 +1,8 @@
 import { DefaultTheme, DarkTheme } from 'react-native-paper';
+import {
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
+} from '@react-navigation/native';
 
 const ovverideColors = {
   primary: '#00008B',
@@ -14,9 +18,11 @@ const customColors = {
 
 const theme = {
   ...DefaultTheme,
+  ...NavigationDefaultTheme,
   roundness: 2,
   colors: {
     ...DefaultTheme.colors,
+    ...NavigationDefaultTheme.colors,
     ...ovverideColors,
   },
   customColors,
@@ -24,9 +30,11 @@ const theme = {
 
 const darkTheme = {
   ...DarkTheme,
+  ...NavigationDarkTheme,
   roundness: 2,
   colors: {
     ...DarkTheme.colors,
+    ...NavigationDarkTheme.colors,
     ...ovverideColors,
     background: '#000d1a',
     primary: '#1f71ff',
@@ -34,8 +42,9 @@ const darkTheme = {
   customColors,
 };
 
-export interface AppTheme extends ReactNativePaper.Theme {
+export type AppTheme = {
   customColors: typeof customColors;
-}
+} & typeof theme &
+  typeof darkTheme;
 
 export { theme, darkTheme };

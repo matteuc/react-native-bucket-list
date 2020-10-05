@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   form: {
     width: '100%',
     height: '100%',
+    padding: '2%',
   },
   formField: {
     paddingTop: 20,
@@ -295,7 +296,7 @@ const ViewWishScreen: React.FC = () => {
 
   return (
     <ThemedScreen style={styles.root}>
-      <>
+      <View style={styles.form}>
         <View style={styles.row}>
           <TouchableRipple
             style={styles.flex}
@@ -342,7 +343,7 @@ const ViewWishScreen: React.FC = () => {
             <Text style={styles.descriptionSection}>{wish?.description}</Text>
           </View>
         </TouchableRipple>
-      </>
+      </View>
     </ThemedScreen>
   );
 };

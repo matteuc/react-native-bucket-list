@@ -33,6 +33,7 @@
     "expo-google-sign-in": "~8.3.0",
     "expo-notifications": "~0.7.2",
     "expo-permissions": "~9.3.0",
+    "expo-screen-orientation": "~2.0.0",
     "expo-splash-screen": "^0.6.2",
     "expo-status-bar": "~1.0.2",
     "firebase": "7.9.0",
@@ -54,7 +55,8 @@
     "react-native-screens": "~2.10.1",
     "react-native-swipe-list-view": "^3.2.4",
     "react-native-timeago": "^0.5.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "@expo/config": "^3.3.9"
   },
   "devDependencies": {
     "@react-native-community/eslint-config": "^2.0.0",

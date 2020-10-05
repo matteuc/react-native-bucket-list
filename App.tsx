@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import * as SplashScreen from 'expo-splash-screen';
 import { NetworkStatusProvider } from './context/NetworkStatusProvider';
-import { ThemeProvider } from './context/ThemeProvider';
+import { ThemeProvider, useTheme } from './context/ThemeProvider';
 import { unAuthScreens, authScreens } from './screens';
 import { AppScreens, AppScreenParamList } from './constants';
 import { AuthProvider, useAuth } from './context/AuthProvider';
@@ -12,9 +14,11 @@ const Stack = createStackNavigator<AppScreenParamList>();
 
 function App() {
   const { user } = useAuth();
+  const theme = useTheme();
+
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer theme={theme}>
         {user ? (
           <Stack.Navigator initialRouteName={AppScreens.HOME}>
             {authScreens.map(({ name, component, showHeader }) => (
@@ -51,6 +55,10 @@ function App() {
 }
 
 export default function Main() {
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    SplashScreen.preventAutoHideAsync();
+  }, []);
   return (
     <ThemeProvider>
       <NetworkStatusProvider>
