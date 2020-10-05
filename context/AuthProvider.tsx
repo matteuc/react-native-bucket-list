@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as Google from 'expo-google-app-auth';
 import { auth } from 'firebase';
-import * as SplashScreen from 'expo-splash-screen';
-import { Platform } from 'react-native';
 import { AppUser } from '../constants';
 import config from '../config';
 import { createUser, getUser, watchUser } from '../utils/users';
@@ -12,12 +10,14 @@ interface AuthContextProps {
   signIn: () => void;
   signOut: () => void;
   user: AppUser;
+  authInitialized: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({
   signIn: () => {},
   signOut: () => {},
   user: null,
+  authInitialized: false,
 });
 
 const googleSignInConfig: Google.GoogleLogInConfig = {
@@ -102,12 +102,6 @@ const AuthProvider: React.FC = ({ children }) => {
       }
 
       if (!authInitialized) {
-        try {
-          // Expo SplashScreen only broken for Android
-          if (Platform.OS !== 'android') await SplashScreen.hideAsync();
-        } catch (e) {
-          if (__DEV__) console.warn(e);
-        }
         setAuthInitialized(true);
       }
     });
@@ -119,7 +113,7 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   return (
-    <AuthContext.Provider value={{ signIn, signOut, user }}>
+    <AuthContext.Provider value={{ signIn, signOut, user, authInitialized }}>
       {children}
     </AuthContext.Provider>
   );
