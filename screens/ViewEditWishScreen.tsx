@@ -2,7 +2,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, BackHandler } from 'react-native';
+import { StyleSheet, View, BackHandler, ScrollView } from 'react-native';
 import {
   Button,
   Caption,
@@ -38,13 +38,16 @@ const styles = StyleSheet.create({
     padding: '2%',
   },
   formField: {
-    paddingTop: 20,
-    paddingBottom: 20,
+    marginTop: 10,
+    marginBottom: 10,
   },
   textField: {
     paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 10,
+  },
+  descriptionField: {
+    flex: 1,
   },
   captionField: {
     paddingTop: 1,
@@ -226,7 +229,7 @@ const EditWishScreen: React.FC = () => {
             }
           />
         </View>
-        <View style={styles.formField}>
+        <ScrollView style={styles.formField}>
           <TextInput
             placeholder="I want to..."
             multiline
@@ -246,7 +249,7 @@ const EditWishScreen: React.FC = () => {
               })
             }
           />
-        </View>
+        </ScrollView>
         <View style={styles.formField}>
           <Button
             disabled={!wishValid || loading}
@@ -338,10 +341,11 @@ const ViewWishScreen: React.FC = () => {
         <TouchableRipple
           onPress={() => {}}
           onLongPress={() => navigation.navigate(ViewEditScreens.EDIT)}
+          style={styles.descriptionField}
         >
-          <View style={styles.textField}>
+          <ScrollView style={styles.textField}>
             <Text style={styles.descriptionSection}>{wish?.description}</Text>
-          </View>
+          </ScrollView>
         </TouchableRipple>
       </View>
     </ThemedScreen>
